@@ -70,6 +70,11 @@ interventions, coping methods, or general attempts the user has tried for mental
 
 `
   }
+  const firstAssistanceMessage = {
+    role: 'assistant',
+    content: `Hello! Welcome to Avasana. I'm Dr. Sophia Bennett!
+    I'm here to help you understand yourself better.`
+  }
   const userPresantationMessage = {
     role: 'user',
     content: `
@@ -77,7 +82,7 @@ interventions, coping methods, or general attempts the user has tried for mental
     `
   }
   // count words in all messages
-  const wordCount = [systemMessage, ...messages].reduce(
+  const wordCount = [systemMessage, firstAssistanceMessage, ...messages].reduce(
     (acc = 0, message: any) => {
       return acc + message.content.split(' ').length
     },
