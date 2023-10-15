@@ -49,18 +49,13 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       }
     })
-  const firstAssistanceMessage: Message = {
-    id: 'default',
-    role: 'assistant',
-    content: `Hello! Welcome to Avasana. I'm Dr. Sophia Bennett!
-      I'm here to help you understand yourself better.`
-  }
+
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         {messages.length ? (
           <>
-            <ChatList messages={[firstAssistanceMessage, ...messages]} />
+            <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (

@@ -70,11 +70,7 @@ interventions, coping methods, or general attempts the user has tried for mental
 
 `
   }
-  const firstAssistanceMessage = {
-    role: 'assistant',
-    content: `Hello! Welcome to Avasana. I'm Dr. Sophia Bennett!
-    I'm here to help you understand yourself better.`
-  }
+
   const userPresantationMessage = {
     role: 'user',
     content: `
@@ -82,7 +78,7 @@ interventions, coping methods, or general attempts the user has tried for mental
     `
   }
   // count words in all messages
-  const wordCount = [systemMessage, firstAssistanceMessage, ...messages].reduce(
+  const wordCount = [systemMessage, ...messages].reduce(
     (acc = 0, message: any) => {
       return acc + message.content.split(' ').length
     },
@@ -102,12 +98,7 @@ interventions, coping methods, or general attempts the user has tried for mental
   }
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo' || 'gpt-3.5-turbo-16k',
-    messages: [
-      systemMessage,
-      userPresantationMessage,
-      firstAssistanceMessage,
-      ...messages
-    ],
+    messages: [systemMessage, userPresantationMessage, ...messages],
     temperature: 0.7,
     stream: true
   })
