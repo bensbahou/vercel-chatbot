@@ -11,7 +11,7 @@ export function FooterText({ className, ...props }: React.ComponentProps<'p'>) {
       )}
       {...props}
     >
-      By @Bensbahou
+      By @Bensbahou for @Paulcone
     </p>
   )
 }

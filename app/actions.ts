@@ -90,17 +90,6 @@ export async function clearChats() {
   return redirect('/')
 }
 
-export async function getSharedChat(id: string) {
-  return null
-  // const chat = await kv.hgetall<Chat>(`chat:${id}`)
-
-  // if (!chat || !chat.sharePath) {
-  //   return null
-  // }
-
-  // return chat
-}
-
 export async function shareChat(chat: Chat) {
   const session = await auth()
 

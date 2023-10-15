@@ -5,18 +5,11 @@ import { ExternalLink } from '@/components/external-link'
 import { IconArrowRight } from '@/components/ui/icons'
 
 const exampleMessages = [
-  {
-    heading: 'Who is Bensbahou?',
-    message: `Who is Bensbahou?`
-  },
-  {
-    heading: 'Tell me a joke!',
-    message: 'Tell me a joke!'
-  },
-  {
-    heading: 'Draft an email',
-    message: `Draft an email to my boss about the following: \n`
-  }
+  "Can you help me navigate some recent challenges? I'm feeling a bit lost.",
+  "I'm anxious about my career transition. Any guidance?",
+  'Could we discuss coping strategies for social discomfort at work?',
+  "I'm dealing with uncertainties in my life. Any insights?",
+  'Can we talk about practical coping skills for heightened anxiety?'
 ]
 
 export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
@@ -24,10 +17,10 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
         <h1 className="mb-2 text-lg font-semibold">
-          Welcome to This dev preview!
+          Hello! Welcome to Avasana. I'm Dr. Sophia Bennett!
         </h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          This is a preview for demonstration.
+          I'm here to help you understand yourself better.
         </p>
         <p className="leading-normal text-muted-foreground">
           You can start a conversation here or try the following examples:
@@ -38,10 +31,10 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
               key={index}
               variant="link"
               className="h-auto p-0 text-base"
-              onClick={() => setInput(message.message)}
+              onClick={() => setInput(message)}
             >
               <IconArrowRight className="mr-2 text-muted-foreground" />
-              {message.heading}
+              {message}
             </Button>
           ))}
         </div>
