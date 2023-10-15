@@ -5,11 +5,11 @@ import { ExternalLink } from '@/components/external-link'
 import { IconArrowRight } from '@/components/ui/icons'
 
 const exampleMessages = [
-  'Can you help me navigate some recent challenges? I&apos;m feeling a bit lost.',
-  'I&apos;m anxious about my career transition. Any guidance?',
-  'Could we discuss coping strategies for social discomfort at work?',
-  'I&apos;m dealing with uncertainties in my life. Any insights?',
-  'Can we talk about practical coping skills for heightened anxiety?'
+  "Can you help me navigate some recent challenges I'm feeling a bit lost?",
+  "I'm anxious about my career transition. Any guidance on how to cope?",
+  'Could we discuss coping strategies for social discomfort at work ?',
+  "I'm dealing with uncertainties in my life. Any insights ?",
+  'Can we talk about practical coping skills for heightened anxiety ?'
 ]
 
 export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
@@ -17,10 +17,10 @@ export function EmptyScreen({ setInput }: Pick<UseChatHelpers, 'setInput'>) {
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-background p-8">
         <h1 className="mb-2 text-lg font-semibold">
-          Hello! Welcome to Avasana. I'm Dr. Sophia Bennett!
+          Hello! Welcome to Avasana. I&apos;m Dr. Sophia Bennett!
         </h1>
         <p className="mb-2 leading-normal text-muted-foreground">
-          I'm here to help you understand yourself better.
+          I&apos;m here to help you understand yourself better.
         </p>
         <p className="leading-normal text-muted-foreground">
           You can start a conversation here or try the following examples:
