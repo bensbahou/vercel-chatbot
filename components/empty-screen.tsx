@@ -5,10 +5,10 @@ import { ExternalLink } from '@/components/external-link'
 import { IconArrowRight } from '@/components/ui/icons'
 
 const exampleMessages = [
-  "Can you help me navigate some recent challenges? I'm feeling a bit lost.",
-  "I'm anxious about my career transition. Any guidance?",
+  'Can you help me navigate some recent challenges? I&apos;m feeling a bit lost.',
+  'I&apos;m anxious about my career transition. Any guidance?',
   'Could we discuss coping strategies for social discomfort at work?',
-  "I'm dealing with uncertainties in my life. Any insights?",
+  'I&apos;m dealing with uncertainties in my life. Any insights?',
   'Can we talk about practical coping skills for heightened anxiety?'
 ]
 
