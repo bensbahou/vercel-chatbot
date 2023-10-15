@@ -28,13 +28,17 @@ interface ImageProps {
 }
 
 export default async function Image({ params }: ImageProps) {
-  const chat = await getSharedChat(params.id)
-
-  if (!chat || !chat?.sharePath) {
-    return null
+  // const chat = await getSharedChat(params.id)
+  const chat = {
+    title: 'Chat',
+    messages: []
   }
 
-  const textAlign = chat?.title?.length > 40 ? 'items-start' : 'items-center'
+  // if (!chat || !chat?.sharePath) {
+  //   return null
+  // }
+
+  const textAlign = 'items-start' // chat?.title?.length > 40 ? 'items-start' : 'items-center'
 
   return new ImageResponse(
     (
