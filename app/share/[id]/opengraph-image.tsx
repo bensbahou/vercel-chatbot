@@ -13,13 +13,13 @@ export const size = {
 
 export const contentType = 'image/png'
 
-const interRegular = fetch(
-  new URL('../../../assets/fonts/Inter-Regular.woff', import.meta.url)
-).then(res => res.arrayBuffer())
+// const interRegular = fetch(
+//   new URL('../../../assets/fonts/Inter-Regular.woff', import.meta.url)
+// ).then(res => res.arrayBuffer())
 
-const interBold = fetch(
-  new URL('../../../assets/fonts/Inter-Bold.woff', import.meta.url)
-).then(res => res.arrayBuffer())
+// const interBold = fetch(
+//   new URL('../../../assets/fonts/Inter-Bold.woff', import.meta.url)
+// ).then(res => res.arrayBuffer())
 
 interface ImageProps {
   params: {
@@ -43,7 +43,7 @@ export default async function Image({ params }: ImageProps) {
   return new ImageResponse(
     (
       <div tw="flex w-full items-start h-full flex-col bg-[#09090b] text-white p-[80px]">
-        <div tw="flex flex-col w-full pt-[40px]">
+        {/* <div tw="flex flex-col w-full pt-[40px]">
           <div tw={`flex w-full ${textAlign}`}>
             <div tw="flex h-18 w-18 items-center justify-center rounded-md border border-[#9b9ba4]">
               <svg
@@ -98,25 +98,25 @@ export default async function Image({ params }: ImageProps) {
             </div>
           </div>
           <div tw="text-[1.8rem] ml-auto text-[#9b9ba4]">chat.vercel.ai</div>
-        </div>
+        </div> */}
       </div>
     ),
     {
-      ...size,
-      fonts: [
-        {
-          name: 'Inter',
-          data: await interRegular,
-          style: 'normal',
-          weight: 400
-        },
-        {
-          name: 'Inter',
-          data: await interBold,
-          style: 'normal',
-          weight: 700
-        }
-      ]
+      ...size
+      // fonts: [
+      //   {
+      //     name: 'Inter',
+      //     data: await interRegular,
+      //     style: 'normal',
+      //     weight: 400
+      //   },
+      //   {
+      //     name: 'Inter',
+      //     data: await interBold,
+      //     style: 'normal',
+      //     weight: 700
+      //   }
+      // ]
     }
   )
 }
