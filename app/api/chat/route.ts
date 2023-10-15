@@ -102,7 +102,12 @@ interventions, coping methods, or general attempts the user has tried for mental
   }
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo' || 'gpt-3.5-turbo-16k',
-    messages: [systemMessage, userPresantationMessage, ...messages],
+    messages: [
+      systemMessage,
+      userPresantationMessage,
+      firstAssistanceMessage,
+      ...messages
+    ],
     temperature: 0.7,
     stream: true
   })
