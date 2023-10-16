@@ -77,7 +77,20 @@ interventions, coping methods, or general attempts the user has tried for mental
     I'm a user of an application called Avasana in which users can talk to a virtual mental health coach who is powered by you chatgpt. I am aware that I am talking to an AI and not a real psychotherapist. I don't want to hear that I should go to a real psychotherapist or seek professional help since I do not have access to that. I want you to help me understand myself better and only then in a collaborative approach decide on strategies or interventions to try. I don't want you to directly give me a list of advice but rather give me the feeling that you try to get to know me. 
     `
   }
+  const systemMessage2 = {
+    role: 'system',
+    content: `Respond in a json format with the informations that you
+    were able to gather about me and your response where you can ask about one of the missing informations. `
+  }
   // count words in all messages
+  // edit the last message
+
+  // messages[messages.length - 1] = {
+  //   ...messages[messages.length - 1],
+  //   content: `${messages[messages.length - 1].content} ${
+  //     systemMessage2.content
+  //   }`
+  // }
   const wordCount = [systemMessage, ...messages].reduce(
     (acc = 0, message: any) => {
       return acc + message.content.split(' ').length
@@ -96,12 +109,14 @@ interventions, coping methods, or general attempts the user has tried for mental
   if (previewToken) {
     configuration.apiKey = previewToken
   }
-  const res = await openai.createChatCompletion({
+  const options = {
     model: 'gpt-3.5-turbo' || 'gpt-3.5-turbo-16k',
     messages: [systemMessage, userPresantationMessage, ...messages],
-    temperature: 0,
+    temperature: 0.7,
     stream: true
-  })
+  }
+
+  const res = await openai.createChatCompletion(options)
 
   const stream = OpenAIStream(res, {
     async onCompletion(completion) {
