@@ -5,7 +5,8 @@ import { ExternalLink } from '@/components/external-link'
 import { IconArrowRight } from '@/components/ui/icons'
 
 const exampleMessages = [
-  "Can you help me navigate some recent challenges I'm feeling a bit lost?",
+  'Hi there!',
+  "Can you help me navigate some recent challenges I'm feeling a bit lost",
   "I'm anxious about my career transition. Any guidance on how to cope?",
   'Could we discuss coping strategies for social discomfort at work ?',
   "I'm dealing with uncertainties in my life. Any insights ?",
