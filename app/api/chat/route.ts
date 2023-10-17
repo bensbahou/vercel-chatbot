@@ -21,47 +21,47 @@ export async function POST(req: Request) {
     role: "system",
     content: prompt,
   };
-  const informationsUpdater = async (informations: any) => {
-    const systemMessage_ = {
-      role: "user",
-      content: `You will be provided with a json data that is missing some of all values,
-    and your task is to complete it with any information you can get from the messages
-    you'll be provided that are part of the convertation between the user and you.
-    You should respond in json format too. and only provide the updated json data even no update was done.
-    You should provide only the json data, no comment or any other text.
- 
-    Current informations:
-    ${JSON.stringify(informations, null, 2)}
-    New informations:
-    ${JSON.stringify(messages.slice(-20), null, 2)}
-    `,
-    };
-    const updatedInformations = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo" || "gpt-3.5-turbo-16k",
-      messages: [systemMessage_],
-      stream: false,
-      temperature: 0,
-    });
-    const json = await updatedInformations.json();
-    return json.choices[0].message.content;
-  };
-  let currentInformations = {
-    Name: "",
-    "Gender & Preferred Pronouns": "",
-    Age: "",
-    "Family Situation": "",
-    "Relationship to Key Figures": "",
-    "Work, Educational & Professional Background": "",
-    "Interests and Hobbies": "",
-    "Mood/Emotional State": "",
-    "Current Challenges or Stressors": "",
-    "Previous Therapy, Treatment, or Coping Strategies": "",
-    "Goals or Desired Outcomes": "",
-    "Cultural, Religious Background & Language": "",
-    "Physical Health and Wellness": "",
-    "Geographical Location or Timezone": "",
-    "User Interaction Preferences & Feedback": "",
-  };
+  // const informationsUpdater = async (informations: any) => {
+  //   const systemMessage_ = {
+  //     role: "user",
+  //     content: `You will be provided with a json data that is missing some of all values,
+  //   and your task is to complete it with any information you can get from the messages
+  //   you'll be provided that are part of the convertation between the user and you.
+  //   You should respond in json format too. and only provide the updated json data even no update was done.
+  //   You should provide only the json data, no comment or any other text.
+
+  //   Current informations:
+  //   ${JSON.stringify(informations, null, 2)}
+  //   New informations:
+  //   ${JSON.stringify(messages.slice(-20), null, 2)}
+  //   `,
+  //   };
+  //   const updatedInformations = await openai.createChatCompletion({
+  //     model: "gpt-3.5-turbo" || "gpt-3.5-turbo-16k",
+  //     messages: [systemMessage_],
+  //     stream: false,
+  //     temperature: 0,
+  //   });
+  //   const json = await updatedInformations.json();
+  //   return json.choices[0].message.content;
+  // };
+  // let currentInformations = {
+  //   Name: "",
+  //   "Gender & Preferred Pronouns": "",
+  //   Age: "",
+  //   "Family Situation": "",
+  //   "Relationship to Key Figures": "",
+  //   "Work, Educational & Professional Background": "",
+  //   "Interests and Hobbies": "",
+  //   "Mood/Emotional State": "",
+  //   "Current Challenges or Stressors": "",
+  //   "Previous Therapy, Treatment, or Coping Strategies": "",
+  //   "Goals or Desired Outcomes": "",
+  //   "Cultural, Religious Background & Language": "",
+  //   "Physical Health and Wellness": "",
+  //   "Geographical Location or Timezone": "",
+  //   "User Interaction Preferences & Feedback": "",
+  // };
 
   const userPresantationMessage = {
     role: "user",
