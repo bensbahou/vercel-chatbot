@@ -1,4 +1,4 @@
-// import { kv } from '@vercel/kv'
+import { kv } from "@vercel/kv";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 
@@ -16,7 +16,11 @@ const openai = new OpenAIApi(configuration);
 
 export async function POST(req: Request) {
   const json = await req.json();
-  const { messages, previewToken, prompt } = json;
+  const { messages, previewToken, prompt, id } = json;
+  console.log("id", id);
+  await kv.set(id, "test");
+  const result = await kv.get(id);
+  console.log("result", result);
 
   const informationsUpdater = async (informations: any) => {
     const systemMessage_: {
@@ -36,12 +40,13 @@ export async function POST(req: Request) {
     `,
     };
     const updatedInformations = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo" || "gpt-4" || "gpt-3.5-turbo-16k",
+      model: "gpt-4" || "gpt-3.5-turbo-16k",
       messages: [systemMessage_],
       stream: false,
       temperature: 0,
     });
     const json = await updatedInformations.json();
+    console.log("json", json);
     return json.choices[0].message.content;
   };
   let currentInformations = {
@@ -61,10 +66,10 @@ export async function POST(req: Request) {
     "Geographical Location or Timezone": "",
     "User Interaction Preferences & Feedback": "",
   };
-  currentInformations = JSON.parse(
-    await informationsUpdater(currentInformations)
-  );
-  console.log("currentInformations", currentInformations);
+  // currentInformations = JSON.parse(
+  //   await informationsUpdater(currentInformations)
+  // );
+  // console.log("currentInformations", currentInformations);
 
   // count words in all messages
   // edit the last message
@@ -82,6 +87,10 @@ export async function POST(req: Request) {
   //   0
   // );
   // console.log("wordCount", wordCount);
+  const session = await auth();
+
+  const user = (await auth())?.user;
+
   const userId = (await auth())?.user.id;
 
   if (!userId) {
