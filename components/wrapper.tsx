@@ -2,7 +2,7 @@
 import React from "react";
 import { Chat } from "./chat";
 import Prompt from "./prompt";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 type Props = {
   id: string;
 };
@@ -60,8 +60,14 @@ interventions, coping methods, or general attempts the user has tried for mental
 15. **User Interaction Preferences & Feedback**: This encompasses any feedback, positive or negative, provided by the user about their experience with the agent. It includes specific linguistic or interaction preferences, suggestions, or areas of improvement highlighted by the user. This dynamic feedback loop ensures the agent continuously refines its approach for that particular user.
 
 `;
-  const localPrompt = localStorage.getItem("prompt");
-  const [prompt, setPrompt] = useState(localPrompt || initialPrompt);
+  const [prompt, setPrompt] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localPrompt = localStorage.getItem("prompt");
+      setPrompt(localPrompt || initialPrompt);
+    }
+  }, []);
   return (
     <div style={{ display: "flex" }}>
       <div style={{ width: "40%" }}>
