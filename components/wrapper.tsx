@@ -3,6 +3,8 @@ import React from "react";
 import { Chat } from "./chat";
 import Prompt from "./prompt";
 import { useState, useEffect } from "react";
+import Notebook from "./Notebook";
+import { Sidebar } from "@/components/sidebar";
 type Props = {
   id: string;
 };
@@ -61,6 +63,7 @@ interventions, coping methods, or general attempts the user has tried for mental
 
 `;
   const [prompt, setPrompt] = useState("");
+  const [notebook, setNotebook] = useState({}); // [notebook, setNotebook
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -68,13 +71,23 @@ interventions, coping methods, or general attempts the user has tried for mental
       setPrompt(localPrompt || initialPrompt);
     }
   }, []);
+
   return (
     <div style={{ display: "flex" }}>
       <div style={{ width: "40%" }}>
-        <Prompt prompt={prompt} setPrompt={setPrompt} />
+        <div
+          style={{
+            position: "fixed",
+          }}
+        >
+          <Sidebar>
+            <Prompt prompt={prompt} setPrompt={setPrompt} />
+          </Sidebar>
+          <Notebook notebook={notebook} />
+        </div>
       </div>
       <div style={{ width: "60%" }}>
-        <Chat id={id} prompt={prompt} />
+        <Chat id={id} prompt={prompt} setNotebook={setNotebook} />
       </div>
     </div>
   );

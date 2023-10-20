@@ -20,7 +20,7 @@ const Prompt = ({ prompt, setPrompt }: Props) => {
       }}
       placeholder="Create a costum promt here"
       spellCheck={false}
-      className="min-h-[60px] max-h-[450px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none"
+      className="min-h-full  h-full  w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none"
     />
   );
 };
