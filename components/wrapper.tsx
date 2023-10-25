@@ -83,7 +83,26 @@ interventions, coping methods, or general attempts the user has tried for mental
           <Sidebar>
             <Prompt prompt={prompt} setPrompt={setPrompt} />
           </Sidebar>
-          <Notebook notebook={notebook} />
+          {/* <Notebook notebook={notebook} /> */}
+          <Notebook
+            notebook={{
+              Name: "John Doe",
+              "Gender & Preferred Pronouns": "Male",
+              Age: "",
+              "Family Situation": "Married",
+              "Relationship to Key Figures": "",
+              "Work, Educational & Professional Background": "",
+              "Interests and Hobbies": "",
+              "Mood/Emotional State": "",
+              "Current Challenges or Stressors": "",
+              "Previous Therapy, Treatment, or Coping Strategies": "",
+              "Goals or Desired Outcomes": "",
+              "Cultural, Religious Background & Language": "English",
+              "Physical Health and Wellness": "",
+              "Geographical Location or Timezone": "Casablanca, Morocco",
+              "User Interaction Preferences & Feedback": "",
+            }}
+          />
         </div>
       </div>
       <div style={{ width: "60%" }}>

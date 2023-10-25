@@ -146,7 +146,7 @@ export async function POST(req: Request) {
   };
   const history = messages.slice(-20);
   const options = {
-    model: "gpt-3.5-turbo" || "gpt-4" || "gpt-3.5-turbo-16k",
+    model: "gpt-3.5-turbo-16k" || "gpt-3.5-turbo" || "gpt-4",
     messages: [systemMessage, userPresantationMessage, ...history],
     temperature: 0,
     stream: true,
