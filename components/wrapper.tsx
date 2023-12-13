@@ -32,8 +32,8 @@ const Wrapper = ({ id }: Props) => {
           <Sidebar>
             <Prompt prompt={prompt} setPrompt={setPrompt} />
           </Sidebar>
-          {/* <Notebook notebook={notebook} /> */}
-          <Notebook
+          <Notebook notebook={notebook} />
+          {/* <Notebook
             notebook={{
               Name: "John Doe",
               "Gender & Preferred Pronouns": "Male",
@@ -51,7 +51,7 @@ const Wrapper = ({ id }: Props) => {
               "Geographical Location or Timezone": "Casablanca, Morocco",
               "User Interaction Preferences & Feedback": "",
             }}
-          />
+          /> */}
         </div>
       </div>
       <div style={{ width: "60%" }}>

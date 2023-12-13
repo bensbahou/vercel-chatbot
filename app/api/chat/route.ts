@@ -4,8 +4,9 @@ import { Configuration, OpenAIApi } from "openai-edge";
 
 import { auth } from "@/auth";
 import { ChatCompletionRequestMessageRoleEnum } from "openai-edge/types/types/chat";
+import { notebookUpdater } from "./notebookUpdater";
 // import { nanoid } from '@/lib/utils'
-
+import { emptyNotebook } from "@/lib/constants";
 export const runtime = "edge";
 
 const configuration = new Configuration({
@@ -18,53 +19,6 @@ export async function POST(req: Request) {
   const json = await req.json();
   const { messages, previewToken, prompt, id } = json;
 
-  const informationsUpdater = async (informations: any, messages: any) => {
-    const systemMessage_: {
-      role: ChatCompletionRequestMessageRoleEnum;
-      content: string;
-    } = {
-      role: "system",
-      content: `You will be provided with a json data that is missing some or all values and messages from history of the conversation,
-    and your task is to complete the json data with any information you can get from the messages
-    You should respond in json format too.
-    You should provide only the json data even when no update was done, no comments or any other text.
-
-    START OF CURRENT NOTEBOOK
-
-    ${JSON.stringify(informations, null, 2)}
-
-    END OF CURRENT NOTEBOOK
-
-    History of the conversation:
-    ${JSON.stringify(messages.slice(-10), null, 2)}
-    `,
-    };
-    const updatedInformations = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo" || "gpt-4" || "gpt-3.5-turbo-16k",
-      messages: [systemMessage_],
-      stream: false,
-      temperature: 0,
-    });
-    const json = await updatedInformations.json();
-    return json.choices[0].message.content;
-  };
-  const emptyNotebook = {
-    Name: "",
-    "Gender & Preferred Pronouns": "",
-    Age: "",
-    "Family Situation": "",
-    "Relationship to Key Figures": "",
-    "Work, Educational & Professional Background": "",
-    "Interests and Hobbies": "",
-    "Mood/Emotional State": "",
-    "Current Challenges or Stressors": "",
-    "Previous Therapy, Treatment, or Coping Strategies": "",
-    "Goals or Desired Outcomes": "",
-    "Cultural, Religious Background & Language": "",
-    "Physical Health and Wellness": "",
-    "Geographical Location or Timezone": "",
-    "User Interaction Preferences & Feedback": "",
-  };
   // currentInformations = JSON.parse(
   //   await informationsUpdater(currentInformations)
   // );
@@ -111,8 +65,9 @@ export async function POST(req: Request) {
     console.log("New notebook id", id);
     result.notebook = emptyNotebook;
   }
-  const newNotebook = JSON.parse(
-    await informationsUpdater(result?.notebook || emptyNotebook, messages)
+  const newNotebook = await notebookUpdater(
+    result?.notebook || emptyNotebook,
+    messages
   );
   console.log("newNotebook", newNotebook);
   result = {
@@ -141,7 +96,15 @@ export async function POST(req: Request) {
   const userPresantationMessage = {
     role: "user",
     content: `
-    I'm a user of an application called Avasana in which users can talk to a virtual mental health coach who is powered by you chatgpt. I am aware that I am talking to an AI and not a real psychotherapist. I don't want to hear that I should go to a real psychotherapist or seek professional help since I do not have access to that. I want you to help me understand myself better and only then in a collaborative approach decide on strategies or interventions to try. I don't want you to directly give me a list of advice but rather give me the feeling that you try to get to know me. 
+    I'm a user of an application called Avasana in which users can talk to a virtual mental health coach
+    who is powered by you chatgpt.
+    I am aware that I am talking to an AI and not a real psychotherapist.
+    I don't want to hear that I should go to a real psychotherapist or seek professional help
+    since I do not have access to that.
+    I want you to help me understand myself better and only then in a collaborative approach
+    decide on strategies or interventions to try.
+    I don't want you to directly give me a list of advice
+    but rather give me the feeling that you try to get to know me. 
     `,
   };
   const history = messages.slice(-20);

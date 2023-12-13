@@ -50,3 +50,22 @@ interventions, coping methods, or general attempts the user has tried for mental
 15. **User Interaction Preferences & Feedback**: This encompasses any feedback, positive or negative, provided by the user about their experience with the agent. It includes specific linguistic or interaction preferences, suggestions, or areas of improvement highlighted by the user. This dynamic feedback loop ensures the agent continuously refines its approach for that particular user.
 
 `;
+
+export const emptyNotebook = {
+  "Name, Age, Gender, Spoken Lanuage": "",
+  "Recent Moods & Emotions": "",
+  "Past OR Current Challenges, Stressors, Traumas": "",
+  "Life Events, Milestones, Childhood": "",
+  "Session Agenda/Next Session Agenda": "",
+  "User’s Goals & Results": "",
+  Relationships: "",
+  "Living Arrangements": "",
+  "Work Situation & Education": "",
+  "Passions, Interests & Hobbies, Resources": "",
+  "Past Therapies, Coping Strategies, and Emotional Triggers": "",
+  Homeworks: "",
+  "Habits (Sleep, Diet, Exercise, Digital, Substance)": "",
+  "Physical Health & Wellness": "",
+  "Coaching Preferences & Feedback": "",
+  "Next Session’s appointment": "",
+};
