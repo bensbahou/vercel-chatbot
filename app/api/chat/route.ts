@@ -6,7 +6,15 @@ import { auth } from "@/auth";
 import { ChatCompletionRequestMessageRoleEnum } from "openai-edge/types/types/chat";
 import { notebookUpdater } from "./notebookUpdater";
 // import { nanoid } from '@/lib/utils'
-import { emptyNotebook } from "@/lib/constants";
+import {
+  emptyNotebook,
+  promptStage1,
+  promptStage2,
+  promptEndStage1,
+  promptEndStage2,
+  promptEndStage3,
+} from "@/lib/constants";
+
 export const runtime = "edge";
 
 const configuration = new Configuration({
@@ -18,6 +26,7 @@ const openai = new OpenAIApi(configuration);
 export async function POST(req: Request) {
   const json = await req.json();
   const { messages, previewToken, prompt, id } = json;
+  const messagesCount = messages.length;
 
   // currentInformations = JSON.parse(
   //   await informationsUpdater(currentInformations)
@@ -65,31 +74,23 @@ export async function POST(req: Request) {
     console.log("New notebook id", id);
     result.notebook = emptyNotebook;
   }
-  const newNotebook = await notebookUpdater(
-    result?.notebook || emptyNotebook,
-    messages
-  );
-  console.log("newNotebook", newNotebook);
-  result = {
-    id,
-    status: "idle",
-    notebook: newNotebook,
-  };
-
-  await kv.set(email, result);
+  let content = "";
+  if (messagesCount / 2 < 2) content = promptStage1;
+  else if (messagesCount / 2 < 16) content = promptStage2;
+  else if (messagesCount / 2 < 18) content = promptEndStage1;
+  else if (messagesCount / 2 < 20) content = promptEndStage2;
+  else content = promptEndStage3;
 
   const systemMessage = {
     role: "system",
     content:
-      prompt +
+      content +
       `
-    and from the current convertation or previous convertations You have recorded a notebook that contains the following informations about the user:
-    
-    START OF NOTEBOOK
+    START OF CURRENT NOTEBOOK
 
-    ${JSON.stringify(newNotebook, null, 2)}
+    ${JSON.stringify(result?.notebook || emptyNotebook, null, 2)}
 
-    END OF NOTEBOOK
+    END OF CURRENT NOTEBOOK
 
     `,
   };
@@ -114,13 +115,19 @@ export async function POST(req: Request) {
     temperature: 0,
     stream: true,
   };
+  console.log("systemMessage", systemMessage);
+  const [newNotebook, res] = (await Promise.all([
+    notebookUpdater(result?.notebook || emptyNotebook, messages),
+    openai.createChatCompletion(options),
+  ])) as any;
 
-  // informationsUpdater(currentInformations).then((updatedInformations) => {
-  //   currentInformations = JSON.parse(updatedInformations);
-  //   console.log("currentInformations", currentInformations);
-  // });
-  const res = await openai.createChatCompletion(options);
+  result = {
+    id,
+    status: "idle",
+    notebook: newNotebook,
+  };
 
+  await kv.set(email, result);
   const stream = OpenAIStream(res, {});
 
   return new StreamingTextResponse(stream);
