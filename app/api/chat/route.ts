@@ -22,11 +22,22 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
+function getCurrentDateFormatted(): string {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.toLocaleString("en-us", { month: "short" });
+  const year = date.getFullYear();
 
+  return `${day}.${month}.${year}`;
+}
 export async function POST(req: Request) {
   const json = await req.json();
   const { messages, previewToken, prompt, id } = json;
   const messagesCount = messages.length;
+  console.log("messagesCount", messagesCount);
+  const lastMessage = messages[messagesCount - 1];
+  lastMessage.content =
+    "[" + getCurrentDateFormatted() + "] " + lastMessage.content;
 
   // currentInformations = JSON.parse(
   //   await informationsUpdater(currentInformations)
@@ -62,23 +73,34 @@ export async function POST(req: Request) {
     configuration.apiKey = previewToken;
   }
 
-  console.log("email", email);
+  // console.log("email", email);
 
   let result: {
     id: string;
     status: string;
     notebook: any;
+    messages: {
+      date: string;
+      content: string;
+      role: string;
+    }[];
   } | null = await kv.get(email);
 
+  const messagesWithDate = [
+    ...(result?.messages || []).slice(0, messagesCount - 2),
+    messages[messages.length - 2],
+    lastMessage,
+  ];
+  // console.log("messagesWithDate", messagesWithDate);
   if (result && result?.id !== id) {
     console.log("New notebook id", id);
     result.notebook = emptyNotebook;
   }
   let content = "";
-  if (messagesCount / 2 < 2) content = promptStage1;
-  else if (messagesCount / 2 < 16) content = promptStage2;
-  else if (messagesCount / 2 < 18) content = promptEndStage1;
-  else if (messagesCount / 2 < 20) content = promptEndStage2;
+  if (messagesCount / 2 <= 2) content = promptStage1;
+  else if (messagesCount / 2 <= 16) content = promptStage2;
+  else if (messagesCount / 2 <= 18) content = promptEndStage1;
+  else if (messagesCount / 2 <= 20) content = promptEndStage2;
   else content = promptEndStage3;
 
   const systemMessage = {
@@ -108,26 +130,44 @@ export async function POST(req: Request) {
     but rather give me the feeling that you try to get to know me. 
     `,
   };
-  const history = messages.slice(-20);
+  const history = messagesWithDate.slice(-20);
   const options = {
     model: "gpt-3.5-turbo-16k" || "gpt-3.5-turbo" || "gpt-4",
     messages: [systemMessage, userPresantationMessage, ...history],
     temperature: 0,
     stream: true,
   };
-  console.log("systemMessage", systemMessage);
-  const [newNotebook, res] = (await Promise.all([
-    notebookUpdater(result?.notebook || emptyNotebook, messages),
-    openai.createChatCompletion(options),
-  ])) as any;
+  // console.log("systemMessage", systemMessage);
+  // const [newNotebook, res] = (await Promise.all([
+  //   notebookUpdater(result?.notebook || emptyNotebook, messages),
+  //   openai.createChatCompletion(options),
+  // ])) as any;
+  await kv.set(email, {
+    ...result,
+    messages: messagesWithDate,
+    status: "pending",
+  });
 
-  result = {
-    id,
-    status: "idle",
-    notebook: newNotebook,
-  };
+  notebookUpdater(result?.notebook || emptyNotebook, messagesWithDate || [])
+    .then(async (newNotebook) => {
+      await kv.set(email, {
+        ...result,
+        messages: messagesWithDate,
+        notebook: newNotebook,
+        status: "idle",
+      });
+    })
+    .catch(async (error) => {
+      console.log("error updating notebook", error);
 
-  await kv.set(email, result);
+      await kv.set(email, {
+        ...result,
+        status: "error",
+      });
+    });
+  console.log("messages", history, history.length);
+  const res = await openai.createChatCompletion(options);
+
   const stream = OpenAIStream(res, {});
 
   return new StreamingTextResponse(stream);
