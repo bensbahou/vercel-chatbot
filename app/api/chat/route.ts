@@ -98,9 +98,9 @@ export async function POST(req: Request) {
   }
   let content = "";
   if (messagesCount / 2 <= 2) content = promptStage1;
-  else if (messagesCount / 2 <= 16) content = promptStage2;
-  else if (messagesCount / 2 <= 18) content = promptEndStage1;
-  else if (messagesCount / 2 <= 20) content = promptEndStage2;
+  else if (messagesCount / 2 <= 8) content = promptStage2;
+  else if (messagesCount / 2 <= 9) content = promptEndStage1;
+  else if (messagesCount / 2 <= 10) content = promptEndStage2;
   else content = promptEndStage3;
 
   const systemMessage = {
